@@ -1,3 +1,6 @@
+## when the user enters a note and presses Enter or save button the following happens:
+
+```mermaid
 sequenceDiagram
     participant browser
     participant server
@@ -29,3 +32,4 @@ sequenceDiagram
     activate server
     server-->>browser: [{ "content": "new note", "date": "2026-2-12" }, ... ]
     deactivate server
+```
