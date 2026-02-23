@@ -21,8 +21,8 @@ function App() {
       <p>neutral: {neutral}</p>
       <p>bad: {bad}</p>
       <p>all: {all}</p>
-      <p>average: {average}</p>
-      <p>positive: {positive} %</p>
+      <p>average: {average.toFixed(2)}</p>
+      <p>positive: {positive.toFixed(2)} %</p>
     </>
   );
 }
