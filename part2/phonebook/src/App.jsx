@@ -30,13 +30,11 @@ const App = () => {
   function search(e) {
     const q = e.target.value;
     if (q) {
-      console.log("yes");
       const result = persons.filter((person) =>
         person.name.toLowerCase().includes(q),
       );
       setPersonsToShow(result);
     } else {
-      console.log("no");
       setPersonsToShow(persons);
     }
   }
