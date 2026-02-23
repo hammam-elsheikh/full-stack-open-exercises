@@ -4,11 +4,13 @@ import "./App.css";
 
 const StatisticLine = ({ text, value }) => {
   return (
-    <p>
-      {text}
-      {value}
-      {text === "positive:" ? "%" : ""}
-    </p>
+    <>
+      <td>{text}</td>
+      <td>
+        {value}
+        {text === "positive" ? "%" : ""}
+      </td>
+    </>
   );
 };
 
@@ -17,12 +19,28 @@ const Statistics = ({ good, neutral, bad, all, average, positive }) => {
     return (
       <>
         <h2>statistics</h2>
-        <StatisticLine text="good:" value={good} />
-        <StatisticLine text="neutral:" value={neutral} />
-        <StatisticLine text="bad:" value={bad} />
-        <StatisticLine text="all:" value={all} />
-        <StatisticLine text="average:" value={average.toFixed(2)} />
-        <StatisticLine text="positive:" value={positive.toFixed(2)} />
+        <table>
+          <tbody>
+            <tr>
+              <StatisticLine text="good" value={good} />
+            </tr>
+            <tr>
+              <StatisticLine text="neutral" value={neutral} />
+            </tr>
+            <tr>
+              <StatisticLine text="bad" value={bad} />
+            </tr>
+            <tr>
+              <StatisticLine text="all" value={all} />
+            </tr>
+            <tr>
+              <StatisticLine text="average" value={average.toFixed(1)} />
+            </tr>
+            <tr>
+              <StatisticLine text="positive" value={positive.toFixed(1)} />
+            </tr>
+          </tbody>
+        </table>
       </>
     );
   else
