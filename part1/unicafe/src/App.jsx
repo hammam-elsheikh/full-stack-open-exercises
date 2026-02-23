@@ -2,17 +2,27 @@
 import { useEffect, useState } from "react";
 import "./App.css";
 
+const StatisticLine = ({ text, value }) => {
+  return (
+    <p>
+      {text}
+      {value}
+      {text === "positive:" ? "%" : ""}
+    </p>
+  );
+};
+
 const Statistics = ({ good, neutral, bad, all, average, positive }) => {
   if (good || neutral || bad)
     return (
       <>
         <h2>statistics</h2>
-        <p>good: {good}</p>
-        <p>neutral: {neutral}</p>
-        <p>bad: {bad}</p>
-        <p>all: {all}</p>
-        <p>average: {average.toFixed(2)}</p>
-        <p>positive: {positive.toFixed(2)} %</p>
+        <StatisticLine text="good:" value={good} />
+        <StatisticLine text="neutral:" value={neutral} />
+        <StatisticLine text="bad:" value={bad} />
+        <StatisticLine text="all:" value={all} />
+        <StatisticLine text="average:" value={average.toFixed(2)} />
+        <StatisticLine text="positive:" value={positive.toFixed(2)} />
       </>
     );
   else
