@@ -3,17 +3,25 @@ import { useEffect, useState } from "react";
 import "./App.css";
 
 const Statistics = ({ good, neutral, bad, all, average, positive }) => {
-  return (
-    <>
-      <h2>statistics</h2>
-      <p>good: {good}</p>
-      <p>neutral: {neutral}</p>
-      <p>bad: {bad}</p>
-      <p>all: {all}</p>
-      <p>average: {average.toFixed(2)}</p>
-      <p>positive: {positive.toFixed(2)} %</p>
-    </>
-  );
+  if (good || neutral || bad)
+    return (
+      <>
+        <h2>statistics</h2>
+        <p>good: {good}</p>
+        <p>neutral: {neutral}</p>
+        <p>bad: {bad}</p>
+        <p>all: {all}</p>
+        <p>average: {average.toFixed(2)}</p>
+        <p>positive: {positive.toFixed(2)} %</p>
+      </>
+    );
+  else
+    return (
+      <>
+        <h2>statistics</h2>
+        <p>No feedback given</p>
+      </>
+    );
 };
 
 function App() {
