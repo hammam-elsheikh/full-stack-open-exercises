@@ -1,4 +1,7 @@
 import { useState } from "react";
+import Persons from "./components/Persons";
+import PersonForm from "./components/PersonForm";
+import Filter from "./components/Filter";
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -9,7 +12,6 @@ const App = () => {
   ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
-
   const [personsToShow, setPersonsToShow] = useState(persons);
 
   function handleNameChange(e) {
@@ -25,6 +27,7 @@ const App = () => {
     if (persons.findIndex((person) => person.name === newName) === -1)
       setPersons([...persons, { name: newName, number: newNumber }]);
     else alert(`${newName} is already added to phonebook`);
+    setPersonsToShow([...persons, { name: newName, number: newNumber }]);
   }
 
   function search(e) {
@@ -42,50 +45,22 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with <input onChange={search} />
-      </div>
-      <form onSubmit={addRecord}>
-        <h2>add a new</h2>
-        <table>
-          <tbody>
-            <tr>
-              <td> name:</td>
-              <td>
-                <input
-                  required={true}
-                  value={newName}
-                  onChange={handleNameChange}
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>number:</td>
-              <td>
-                <input
-                  required={true}
-                  value={newNumber}
-                  onChange={handleNumberChange}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
+
+      <Filter search={search} />
+
+      <h2>add a new</h2>
+
+      <PersonForm
+        addRecord={addRecord}
+        newName={newName}
+        handleNameChange={handleNameChange}
+        newNumber={newNumber}
+        handleNumberChange={handleNumberChange}
+      />
+
       <h2>Numbers</h2>
-      <table>
-        <tbody>
-          {personsToShow.map((person) => (
-            <tr key={person.name}>
-              <td>{person.name}</td>
-              <td>{person.number}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+
+      <Persons personsToShow={personsToShow} />
     </>
   );
 };
