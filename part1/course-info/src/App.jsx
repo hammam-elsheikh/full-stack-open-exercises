@@ -19,10 +19,20 @@ const App = () => {
         exercises: 14,
         id: 3,
       },
+      {
+        name: "Redux",
+        exercises: 11,
+        id: 4,
+      },
     ],
   };
 
-  return <Course course={course} />;
+  return (
+    <>
+      <Course course={course} />
+      <Total parts={course.parts} />
+    </>
+  );
 };
 
 export default App;
@@ -60,6 +70,16 @@ function Part({ part, exercises }) {
   );
 }
 
-// function Total({ exercises1, exercises2, exercises3 }) {
-//   return <p> Number of exercises {exercises1 + exercises2 + exercises3}</p>;
-// }
+function Total({ parts }) {
+  let sum = 0;
+  parts.forEach((part) => {
+    sum += part.exercises;
+  });
+
+  return (
+    <p>
+      {" "}
+      <strong> Number of exercises {sum}</strong>
+    </p>
+  );
+}
