@@ -1,5 +1,8 @@
 import { useState } from "react";
 import "./App.css";
+import Total from "./components/Total";
+import Course from "./components/Course";
+
 const App = () => {
   const [course, setCourse] = useState({
     id: 1,
@@ -37,54 +40,3 @@ const App = () => {
 };
 
 export default App;
-
-const Course = ({ course }) => {
-  return (
-    <>
-      <Header name={course.name} />
-      <Content parts={course.parts} />
-    </>
-  );
-};
-
-function Header({ name }) {
-  return <h1>{name}</h1>;
-}
-
-function Content({ parts }) {
-  return (
-    <>
-      {parts.map((part) => (
-        <Part key={part.id} part={part.name} exercises={part.exercises} />
-      ))}
-    </>
-  );
-}
-
-function Part({ part, exercises }) {
-  return (
-    <>
-      <p>
-        {part} {exercises}
-      </p>
-    </>
-  );
-}
-
-function Total({ course }) {
-  console.log("course", course);
-  const [sum, setSum] = useState(
-    course.parts.reduce((prev, curr) => (prev += curr.exercises), 0),
-  );
-
-  // parts.forEach((part) => {
-  //   sum += part.exercises;
-  // });
-
-  return (
-    <p>
-      {" "}
-      <strong> Number of exercises {sum}</strong>{" "}
-    </p>
-  );
-}
