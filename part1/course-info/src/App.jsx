@@ -1,6 +1,7 @@
+import { useState } from "react";
 import "./App.css";
 const App = () => {
-  const course = {
+  const [course, setCourse] = useState({
     id: 1,
     name: "Half Stack application development",
     parts: [
@@ -25,12 +26,12 @@ const App = () => {
         id: 4,
       },
     ],
-  };
+  });
 
   return (
     <>
       <Course course={course} />
-      <Total parts={course.parts} />
+      <Total course={course} />
     </>
   );
 };
@@ -70,16 +71,20 @@ function Part({ part, exercises }) {
   );
 }
 
-function Total({ parts }) {
-  let sum = 0;
-  parts.forEach((part) => {
-    sum += part.exercises;
-  });
+function Total({ course }) {
+  console.log("course", course);
+  const [sum, setSum] = useState(
+    course.parts.reduce((prev, curr) => (prev += curr.exercises), 0),
+  );
+
+  // parts.forEach((part) => {
+  //   sum += part.exercises;
+  // });
 
   return (
     <p>
       {" "}
-      <strong> Number of exercises {sum}</strong>
+      <strong> Number of exercises {sum}</strong>{" "}
     </p>
   );
 }
