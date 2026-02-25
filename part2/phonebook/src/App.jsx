@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
-import axios from "axios";
+import phoneServices from "./services/phoneRecords";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
@@ -11,8 +11,7 @@ const App = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((res) => {
-      const data = res.data;
+    phoneServices.getAll().then((data) => {
       setPersons(data);
     });
   }, []);
@@ -30,10 +29,29 @@ const App = () => {
   function addRecord(e) {
     e.preventDefault();
     if (persons.findIndex((person) => person.name === newName) === -1) {
-      setPersons([...persons, { name: newName, number: newNumber }]);
-      setNewName("");
-      setNewNumber("");
+      const newRecord = { name: newName, number: newNumber };
+      phoneServices
+        .create(newRecord)
+        .then((returnedRecord) => {
+          setPersons([...persons, returnedRecord]);
+          setNewName("");
+          setNewNumber("");
+        })
+        .catch((err) => console.log(err));
     } else alert(`${newName} is already added to phonebook`);
+  }
+
+  function deleteRecord(person) {
+    const del = window.confirm(`Delete ${person.name} ?`);
+    if (del) {
+      phoneServices
+        .remove(person.id)
+        .then((returnedRecord) =>
+          setPersons(
+            persons.filter((person) => person.id !== returnedRecord.id),
+          ),
+        );
+    }
   }
 
   function search(e) {
@@ -66,7 +84,7 @@ const App = () => {
 
       <h2>Numbers</h2>
 
-      <Persons personsToShow={personsToShow} />
+      <Persons deleteRecord={deleteRecord} personsToShow={personsToShow} />
     </>
   );
 };

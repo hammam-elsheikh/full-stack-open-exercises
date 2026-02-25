@@ -1,4 +1,4 @@
-export default function Persons({ personsToShow }) {
+export default function Persons({ personsToShow, deleteRecord }) {
   return (
     <table>
       <tbody>
@@ -6,6 +6,9 @@ export default function Persons({ personsToShow }) {
           <tr key={person.name}>
             <td>{person.name}</td>
             <td>{person.number}</td>
+            <td>
+              <button onClick={() => deleteRecord(person)}>delete</button>
+            </td>
           </tr>
         ))}
       </tbody>
