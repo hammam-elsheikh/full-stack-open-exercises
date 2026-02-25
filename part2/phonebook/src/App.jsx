@@ -3,12 +3,14 @@ import Persons from "./components/Persons";
 import PersonForm from "./components/PersonForm";
 import Filter from "./components/Filter";
 import phoneServices from "./services/phoneRecords";
+import { Notification } from "./components/Notification";
 
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [successMsg, setSuccessMsg] = useState(null);
 
   useEffect(() => {
     phoneServices.getAll().then((data) => {
@@ -48,12 +50,15 @@ const App = () => {
         const personsCopy = [...persons];
         const recordToUpdate = personsCopy[recordIndex];
         recordToUpdate.number = newNumber;
-        console.log(personsCopy);
 
         phoneServices.update(recordToUpdate, recordToUpdate.id).then(() => {
           setPersons(personsCopy);
+          setSuccessMsg(`${newName}'s phone number updated successfully 🥳`);
           setNewName("");
           setNewNumber("");
+          setTimeout(() => {
+            setSuccessMsg(null);
+          }, 5000);
         });
       }
     }
@@ -87,6 +92,7 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
+      <Notification successMsg={successMsg} />
 
       <Filter search={search} />
 
