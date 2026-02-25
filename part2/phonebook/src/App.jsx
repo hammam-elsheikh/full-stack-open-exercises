@@ -28,7 +28,8 @@ const App = () => {
 
   function addRecord(e) {
     e.preventDefault();
-    if (persons.findIndex((person) => person.name === newName) === -1) {
+    const recordIndex = persons.findIndex((person) => person.name === newName);
+    if (recordIndex === -1) {
       const newRecord = { name: newName, number: newNumber };
       phoneServices
         .create(newRecord)
@@ -38,7 +39,24 @@ const App = () => {
           setNewNumber("");
         })
         .catch((err) => console.log(err));
-    } else alert(`${newName} is already added to phonebook`);
+    } else {
+      const updatePhone = confirm(
+        `${newName} is already added to phonebook, do you want to replace the old phone number with the new one?`,
+      );
+
+      if (updatePhone) {
+        const personsCopy = [...persons];
+        const recordToUpdate = personsCopy[recordIndex];
+        recordToUpdate.number = newNumber;
+        console.log(personsCopy);
+
+        phoneServices.update(recordToUpdate, recordToUpdate.id).then(() => {
+          setPersons(personsCopy);
+          setNewName("");
+          setNewNumber("");
+        });
+      }
+    }
   }
 
   function deleteRecord(person) {

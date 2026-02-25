@@ -12,4 +12,8 @@ function remove(id) {
   return axios.delete(`${baseURL}/${id}`).then((res) => res.data);
 }
 
-export default { getAll, create, remove };
+function update(newObj, id) {
+  return axios.put(`${baseURL}/${id}`, newObj).then((res) => res.data);
+}
+
+export default { getAll, create, remove, update };
