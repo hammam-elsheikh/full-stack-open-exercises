@@ -11,6 +11,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [successMsg, setSuccessMsg] = useState(null);
+  const [errorMsg, setErrorMsg] = useState(null);
 
   useEffect(() => {
     phoneServices.getAll().then((data) => {
@@ -47,21 +48,35 @@ const App = () => {
       );
 
       if (updatePhone) {
-        const personsCopy = [...persons];
-        const recordToUpdate = personsCopy[recordIndex];
-        recordToUpdate.number = newNumber;
-
-        phoneServices.update(recordToUpdate, recordToUpdate.id).then(() => {
-          setPersons(personsCopy);
-          setSuccessMsg(`${newName}'s phone number updated successfully 🥳`);
-          setNewName("");
-          setNewNumber("");
-          setTimeout(() => {
-            setSuccessMsg(null);
-          }, 5000);
-        });
+        updateRecorde(recordIndex);
       }
     }
+  }
+
+  function updateRecorde(recordIndex) {
+    const personsCopy = [...persons];
+    const recordToUpdate = personsCopy[recordIndex];
+    recordToUpdate.number = newNumber;
+
+    phoneServices
+      .update(recordToUpdate, recordToUpdate.id)
+      .then(() => {
+        setPersons(personsCopy);
+        setSuccessMsg(`${newName}'s phone number updated successfully 🥳`);
+        setNewName("");
+        setNewNumber("");
+        setTimeout(() => {
+          setSuccessMsg(null);
+        }, 5000);
+      })
+      .catch(() => {
+        setErrorMsg(`${newName} informaion has been deleted from the server`);
+        setNewName("");
+        setNewNumber("");
+        setTimeout(() => {
+          setErrorMsg(null);
+        }, 5000);
+      });
   }
 
   function deleteRecord(person) {
@@ -92,7 +107,7 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
-      <Notification successMsg={successMsg} />
+      <Notification errorMsg={errorMsg} successMsg={successMsg} />
 
       <Filter search={search} />
 

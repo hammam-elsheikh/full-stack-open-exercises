@@ -40,11 +40,20 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+.success,
+.error {
+  margin-bottom: 1rem;
+  border-radius: 5px;
+  padding: 0.5rem 1rem;
+}
+
 .success {
   color: #4caf50;
   background-color: #dff0d8;
   border: 1px solid #4caf50;
-  margin-bottom: 1rem;
-  border-radius: 5px;
-  padding: 0.5rem 1rem;
+}
+.error {
+  color: #af4c4c;
+  background-color: #f0d8d8;
+  border: 1px solid #af4c4c;
 }
