@@ -31,11 +31,34 @@ let persons = [
   },
 ];
 
+function generateId() {
+  return String(Math.floor(Math.random() * 10000000000));
+}
+
 app.get("/", (req, res) => {
   res.send("hello, world");
 });
 app.get("/api/persons", (req, res) => {
   res.json(persons);
+});
+app.post("/api/persons", (req, res) => {
+  const body = req.body;
+
+  if (body.name?.trim() && body.number?.trim()) {
+    const id = generateId();
+    const newPerson = {
+      id,
+      name: body.name.trim(),
+      number: body.number.trim(),
+    };
+
+    persons.push(newPerson);
+    console.log(`${newPerson.name} info added successfully`);
+    res.json(newPerson);
+  } else {
+    console.log(`unvalid person info`);
+    res.status(400).end("unvalid person info");
+  }
 });
 app.get(`/api/persons/:id`, (req, res) => {
   const id = req.params.id;
