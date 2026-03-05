@@ -22,7 +22,8 @@ const App = () => {
   let personsToShow;
 
   function handleNameChange(e) {
-    setNewName(e.target.value);
+    const name = e.target.value;
+    setNewName(name);
   }
 
   function handleNumberChange(e) {
@@ -31,29 +32,33 @@ const App = () => {
 
   function addRecord(e) {
     e.preventDefault();
-    const recordIndex = persons.findIndex((person) => person.name === newName);
-    if (recordIndex === -1) {
-      const newRecord = { name: newName, number: newNumber };
-      phoneServices
-        .create(newRecord)
-        .then((returnedRecord) => {
-          setPersons([...persons, returnedRecord]);
-          setNewName("");
-          setNewNumber("");
-        })
-        .catch((err) => console.log(err));
-    } else {
-      const updatePhone = confirm(
-        `${newName} is already added to phonebook, do you want to replace the old phone number with the new one?`,
+    if (newName.trim() && newNumber.trim()) {
+      const recordIndex = persons.findIndex(
+        (person) => person.name === newName.trim(),
       );
+      if (recordIndex === -1) {
+        const newRecord = { name: newName.trim(), number: newNumber.trim() };
+        phoneServices
+          .create(newRecord)
+          .then((returnedRecord) => {
+            setPersons([...persons, returnedRecord]);
+            setNewName("");
+            setNewNumber("");
+          })
+          .catch((err) => console.log(err));
+      } else {
+        const updatePhone = confirm(
+          `${newName} is already added to phonebook, do you want to replace the old phone number with the new one?`,
+        );
 
-      if (updatePhone) {
-        updateRecorde(recordIndex);
+        if (updatePhone) {
+          updateRecord(recordIndex);
+        }
       }
     }
   }
 
-  function updateRecorde(recordIndex) {
+  function updateRecord(recordIndex) {
     const personsCopy = [...persons];
     const recordToUpdate = personsCopy[recordIndex];
     recordToUpdate.number = newNumber;
@@ -70,7 +75,7 @@ const App = () => {
         }, 5000);
       })
       .catch(() => {
-        setErrorMsg(`${newName} informaion has been deleted from the server`);
+        setErrorMsg(`${newName} information has been deleted from the server`);
         setNewName("");
         setNewNumber("");
         setTimeout(() => {
