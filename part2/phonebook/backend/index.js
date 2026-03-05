@@ -1,7 +1,12 @@
 const express = require("express");
+const path = require("node:path");
+
 const PORT = 8080;
 
 const app = express();
+
+app.use(express.json());
+app.use(express.static(__dirname));
 
 const persons = [
   {
@@ -31,6 +36,13 @@ app.get("/", (req, res) => {
 });
 app.get("/api/persons", (req, res) => {
   res.json(persons);
+});
+
+app.get("/info", (req, res) => {
+  const entries = persons.length;
+  const time = new Date();
+
+  res.send(`<p>phonebook has info for ${entries} people</p><p>${time}</p>`);
 });
 
 app.listen(PORT, () => {
