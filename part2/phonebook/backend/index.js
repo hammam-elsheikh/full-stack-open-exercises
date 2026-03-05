@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 app.use(express.static(__dirname));
 
-const persons = [
+let persons = [
   {
     id: "1",
     name: "Arto Hellas",
@@ -42,6 +42,15 @@ app.get(`/api/persons/:id`, (req, res) => {
   const person = persons.find((persons) => persons.id === id);
   if (!person) return res.status(404).end();
 
+  res.json(person);
+});
+app.delete(`/api/persons/:id`, (req, res) => {
+  const id = req.params.id;
+  const person = persons.find((persons) => persons.id === id);
+  if (!person) return res.status(404).end();
+
+  persons = persons.filter((person) => person.id !== id);
+  console.log(`${person.name} record was deleted`);
   res.json(person);
 });
 
