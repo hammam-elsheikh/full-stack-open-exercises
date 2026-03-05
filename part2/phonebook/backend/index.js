@@ -43,13 +43,21 @@ app.get("/api/persons", (req, res) => {
 });
 app.post("/api/persons", (req, res) => {
   const body = req.body;
-
   if (body.name?.trim() && body.number?.trim()) {
+    const name = body.name.trim();
+    const number = body.number.trim();
+    const targetPerson = persons.find((person) => person.name === name);
+    if (targetPerson) {
+      console.log("name must be unique");
+      return res
+        .status(400)
+        .json({ error: "couldn't add this info! the name must be unique" });
+    }
     const id = generateId();
     const newPerson = {
       id,
-      name: body.name.trim(),
-      number: body.number.trim(),
+      name,
+      number,
     };
 
     persons.push(newPerson);
