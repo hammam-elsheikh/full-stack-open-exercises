@@ -8,7 +8,12 @@
     {
       "id": "788f",
       "name": "guy",
-      "number": "6513"
+      "number": "4561"
+    },
+    {
+      "id": "7cc6",
+      "name": "ofew",
+      "number": "6415"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"

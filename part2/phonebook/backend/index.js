@@ -6,6 +6,11 @@ const PORT = 8080;
 const app = express();
 
 app.use(express.json());
+
+const morgan = require("morgan");
+
+app.use(morgan("tiny"));
+
 app.use(express.static(__dirname));
 
 let persons = [
@@ -34,6 +39,12 @@ let persons = [
 function generateId() {
   return String(Math.floor(Math.random() * 10000000000));
 }
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: "unknown endpoint" });
+};
+
+app.use(unknownEndpoint);
 
 app.get("/", (req, res) => {
   res.send("hello, world");
