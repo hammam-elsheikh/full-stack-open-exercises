@@ -4,8 +4,10 @@ const morgan = require("morgan");
 
 const PORT = 8080;
 
-const app = express();
+const cors = require("cors");
 
+const app = express();
+app.use(cors());
 app.use(express.json());
 
 morgan.token("post-data", (req) => {
