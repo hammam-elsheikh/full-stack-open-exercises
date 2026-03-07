@@ -1,5 +1,6 @@
 const express = require("express");
 const path = require("node:path");
+const morgan = require("morgan");
 
 const PORT = 8080;
 
@@ -7,9 +8,15 @@ const app = express();
 
 app.use(express.json());
 
-const morgan = require("morgan");
+morgan.token("post-data", (req) => {
+  return req.method === "POST" ? JSON.stringify(req.body) : "";
+});
 
-app.use(morgan("tiny"));
+app.use(
+  morgan(
+    ":method :url :status :res[content-length] - :response-time ms :post-data",
+  ),
+);
 
 app.use(express.static(__dirname));
 
@@ -39,12 +46,6 @@ let persons = [
 function generateId() {
   return String(Math.floor(Math.random() * 10000000000));
 }
-
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: "unknown endpoint" });
-};
-
-app.use(unknownEndpoint);
 
 app.get("/", (req, res) => {
   res.send("hello, world");
@@ -82,14 +83,18 @@ app.post("/api/persons", (req, res) => {
 app.get(`/api/persons/:id`, (req, res) => {
   const id = req.params.id;
   const person = persons.find((persons) => persons.id === id);
-  if (!person) return res.status(404).end();
+  if (!person) {
+    return res.status(404).json({ error: "person not found" });
+  }
 
   res.json(person);
 });
 app.delete(`/api/persons/:id`, (req, res) => {
   const id = req.params.id;
   const person = persons.find((persons) => persons.id === id);
-  if (!person) return res.status(404).end();
+  if (!person) {
+    return res.status(404).json({ error: "person not found" });
+  }
 
   persons = persons.filter((person) => person.id !== id);
   console.log(`${person.name} record was deleted`);
@@ -102,6 +107,12 @@ app.get("/info", (req, res) => {
 
   res.send(`<p>phonebook has info for ${entries} people</p><p>${time}</p>`);
 });
+
+const unknownEndpoint = (request, response) => {
+  response.status(404).json({ error: "unknown endpoint" });
+};
+
+app.use(unknownEndpoint);
 
 app.listen(PORT, () => {
   console.log(`server running on port ${PORT}`);
