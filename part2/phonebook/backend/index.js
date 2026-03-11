@@ -2,12 +2,9 @@ const express = require("express");
 const path = require("node:path");
 const morgan = require("morgan");
 
-const PORT = 8080;
-
-const cors = require("cors");
+const PORT = process.env.PORT || 3001;
 
 const app = express();
-app.use(cors());
 app.use(express.json());
 
 morgan.token("post-data", (req) => {
@@ -20,7 +17,7 @@ app.use(
   ),
 );
 
-app.use(express.static(__dirname));
+app.use(express.static("dist"));
 
 let persons = [
   {
@@ -50,7 +47,7 @@ function generateId() {
 }
 
 app.get("/", (req, res) => {
-  res.send("hello, world");
+  res.sendFile(path.join(__dirname, "dist", "index.html"));
 });
 app.get("/api/persons", (req, res) => {
   res.json(persons);
